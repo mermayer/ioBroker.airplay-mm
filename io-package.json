@@ -1,0 +1,107 @@
+{
+  "common": {
+    "name": "airplay-mm",
+    "version": "0.1.0-beta.1",
+    "news": {
+      "0.1.0-beta.1": {
+        "en": "Initial AirPlay MM release with pyatv, local and cloud text-to-speech, a persistent speech cache, pairing and multi-receiver announcements."
+      }
+    },
+    "titleLang": {
+      "en": "AirPlay MM"
+    },
+    "desc": {
+      "en": "AirPlay text-to-speech announcements for ioBroker with local and cloud voices, persistent caching and multiple receivers"
+    },
+    "authors": [
+      "mermayer"
+    ],
+    "licenseInformation": {
+      "type": "free",
+      "license": "GPL-3.0-or-later"
+    },
+    "keywords": [
+      "AirPlay",
+      "Piper",
+      "TTS",
+      "local"
+    ],
+    "platform": "Javascript/Node.js",
+    "mode": "daemon",
+    "type": "multimedia",
+    "connectionType": "local",
+    "dataSource": "push",
+    "dataFolder": "airplay-mm.%INSTANCE%",
+    "compact": false,
+    "stopTimeout": 5000,
+    "enabled": false,
+    "loglevel": "info",
+    "tier": 3,
+    "messagebox": true,
+    "icon": "airplay-mm.svg",
+    "adminUI": {
+      "config": "materialize"
+    },
+    "localLinks": {
+      "_default": "/adapter/airplay-mm/index_m.html?%instance%"
+    },
+    "dependencies": [
+      {
+        "js-controller": ">=6.0.11"
+      }
+    ],
+    "globalDependencies": [
+      {
+        "admin": ">=7.0.23"
+      }
+    ],
+    "title": "AirPlay MM"
+  },
+  "native": {
+    "schemaVersion": 2,
+    "bind": "",
+    "port": 8098,
+    "network": "",
+    "seedHosts": [],
+    "devices": [],
+    "defaultMode": "native-ntp",
+    "maxVolume": 40,
+    "importPrototype": false,
+    "legacyBridge": false,
+    "sayitInstances": [],
+    "speechProvider": "piper",
+    "piperVoice": "de_DE-thorsten-medium",
+    "airplayPreRollEnabled": true,
+    "airplayPreRollMs": 700,
+    "keepAliveEnabled": true,
+    "keepAliveSeconds": 300,
+    "alexaLearningEnabled": false,
+    "alexaInstances": [
+      "alexa2.0"
+    ]
+  },
+  "objects": [],
+  "instanceObjects": [
+    {
+      "_id": "info",
+      "type": "channel",
+      "common": {
+        "name": "Status"
+      },
+      "native": {}
+    },
+    {
+      "_id": "info.connection",
+      "type": "state",
+      "common": {
+        "name": "Speech output ready",
+        "type": "boolean",
+        "role": "indicator.connected",
+        "read": true,
+        "write": false,
+        "def": false
+      },
+      "native": {}
+    }
+  ]
+}

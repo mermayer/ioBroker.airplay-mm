@@ -1,0 +1,59 @@
+{
+  "name": "iobroker.airplay-mm",
+  "version": "0.1.0-beta.1",
+  "description": "AirPlay text-to-speech announcements for ioBroker with local and cloud voices, persistent caching and multiple receivers",
+  "author": "mermayer",
+  "license": "GPL-3.0-or-later",
+  "main": "main.js",
+  "engines": {
+    "node": "^22.19.0 || ^24.0.0"
+  },
+  "os": [
+    "linux"
+  ],
+  "cpu": [
+    "x64"
+  ],
+  "keywords": [
+    "ioBroker",
+    "AirPlay",
+    "Piper",
+    "TTS",
+    "local"
+  ],
+  "files": [
+    "main.js",
+    "lib/",
+    "worker/*.py",
+    "web/",
+    "admin/",
+    "licenses/",
+    "io-package.json",
+    "README.md",
+    "CHANGELOG.md",
+    "NOTICE.txt",
+    "LICENSE"
+  ],
+  "scripts": {
+    "build": "node tools/build-admin.mjs",
+    "check": "node --check main.js && node --check lib/config.js && node --check lib/alexa-learning.js && node --check lib/speechify-key.js && node --check lib/sayit.js && node --check lib/sayit-source.js && node --check lib/runtime.js && node --check lib/supervisor.js && node --check lib/controller.js && node --check admin/admin.js && node --check admin/config-model.js && node --check web/app.js && node --check web/device-icons.js && node --check admin/device-icons.js",
+    "test": "node --test --test-concurrency=1 test/*.test.mjs",
+    "pack:local": "npm run build && npm run check && npm test && npm pack --ignore-scripts",
+    "test:python": "python tools/test-python.py"
+  },
+  "dependencies": {
+    "@iobroker/adapter-core": "3.4.2",
+    "@iobroker/types": "7.2.5"
+  },
+  "devDependencies": {
+    "ajv": "^8.20.0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/mermayer/ioBroker.airplay-mm.git"
+  },
+  "homepage": "https://github.com/mermayer/ioBroker.airplay-mm#readme",
+  "bugs": {
+    "url": "https://github.com/mermayer/ioBroker.airplay-mm/issues"
+  }
+}

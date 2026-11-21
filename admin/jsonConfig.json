@@ -1,0 +1,292 @@
+{
+  "$schema": "https://raw.githubusercontent.com/ioBroker/ioBroker.admin/master/packages/jsonConfig/schemas/jsonConfig.json",
+  "type": "tabs",
+  "i18n": false,
+  "items": {
+    "general": {
+      "type": "panel",
+      "label": "Speech output",
+      "items": {
+        "schemaVersion": {
+          "type": "number",
+          "label": "Configuration format",
+          "hidden": true
+        },
+        "_intro": {
+          "type": "staticText",
+          "text": "Send Piper, SayIt or Speechify announcements to one or more AirPlay receivers. Requires Linux x64 and Python 3.11 to 3.13. Piper works locally after initial setup; cloud voices need internet for new texts.",
+          "newLine": true,
+          "sm": 12
+        },
+        "bind": {
+          "type": "ip",
+          "label": "Local network address",
+          "onlyIp4": true,
+          "noInternal": true,
+          "listenOnAllPorts": false,
+          "help": "Blank: import the legacy address or select automatically. With multiple interfaces, choose the address on the receiver network.",
+          "sm": 8
+        },
+        "port": {
+          "type": "number",
+          "label": "Web interface port",
+          "min": 1024,
+          "max": 65535,
+          "sm": 4
+        },
+        "maxVolume": {
+          "type": "number",
+          "label": "Maximum announcement volume (%)",
+          "min": 1,
+          "max": 100,
+          "help": "The default limit is 40%. An announcement changes the volume of the selected receiver.",
+          "sm": 6
+        },
+        "_status": {
+          "type": "textSendTo",
+          "label": "Setup",
+          "command": "setupStatus",
+          "sm": 12
+        },
+        "_panel": {
+          "type": "textSendTo",
+          "label": "Web interface address",
+          "command": "getPanelUrl",
+          "copyToClipboard": true,
+          "sm": 12
+        },
+        "_open": {
+          "type": "staticText",
+          "text": "Open the interface using the instance open button or the address above. Initial setup can take several minutes. Progress and errors appear in the ioBroker log and info states.",
+          "sm": 12
+        },
+        "speechProvider": {
+          "type": "select",
+          "label": "Speech provider",
+          "options": [
+            {
+              "value": "piper",
+              "label": "Piper · Thorsten · Fully local"
+            },
+            {
+              "value": "sayit-google",
+              "label": "SayIt · Google German · New texts online"
+            },
+            {
+              "value": "speechify",
+              "label": "Speechify · Runa · Ramona fallback"
+            }
+          ],
+          "help": "SayIt must be installed on the same host. Speech is generated without starting the SayIt instance. Completed announcements use the adapter cache.",
+          "sm": 12
+        },
+        "piperVoice": {
+          "type": "select",
+          "label": "Local voice",
+          "options": [
+            {
+              "value": "de_DE-thorsten-medium",
+              "label": "Thorsten · Male · Medium"
+            },
+            {
+              "value": "de_DE-ramona-low",
+              "label": "Ramona · Female · Low"
+            }
+          ],
+          "hidden": "data.speechProvider === 'sayit-google'",
+          "help": "The selected voice is verified and downloaded on first use. Generation then works locally.",
+          "sm": 12
+        },
+        "airplayPreRollEnabled": {
+          "type": "checkbox",
+          "label": "Enable silent AirPlay pre-roll",
+          "sm": 6
+        },
+        "airplayPreRollMs": {
+          "type": "number",
+          "label": "Pre-roll (milliseconds)",
+          "min": 0,
+          "max": 2000,
+          "step": 50,
+          "disabled": "!data.airplayPreRollEnabled",
+          "help": "1,000 ms = 1 second. Default: 700 ms. Without pre-roll, some receivers may attenuate the beginning.",
+          "sm": 6
+        },
+        "keepAliveEnabled": {
+          "type": "checkbox",
+          "label": "Keep connections open after announcements",
+          "sm": 6
+        },
+        "keepAliveSeconds": {
+          "type": "number",
+          "label": "Release after inactivity (seconds)",
+          "min": 0,
+          "max": 3600,
+          "help": "Default: 300 seconds; 0 keeps the connection until manually released or taken over by another sender. Applies to persistent pyatv modes.",
+          "sm": 6
+        },
+        "alexaLearningEnabled": {
+          "type": "checkbox",
+          "label": "Prepare Alexa texts with Runa (no playback)",
+          "sm": 12
+        },
+        "alexaInstances": {
+          "type": "jsonEditor",
+          "label": "Alexa instances",
+          "sm": 12
+        }
+      }
+    },
+    "receivers": {
+      "type": "panel",
+      "label": "Receiver",
+      "items": {
+        "network": {
+          "type": "text",
+          "label": "Discovery network (optional)",
+          "help": "For example 192.168.1.0/24. Blank: use the legacy setting or selected interface network. Discovery uses mDNS and known addresses, without scanning the entire IP range.",
+          "sm": 12
+        },
+        "seedHosts": {
+          "type": "chips",
+          "label": "Additional known IPv4 addresses",
+          "help": "Up to 32 local addresses in the discovery network. Blank: import legacy addresses if enabled.",
+          "sm": 12
+        },
+        "defaultMode": {
+          "type": "select",
+          "label": "Default transport mode",
+          "sm": 12,
+          "options": [
+            {
+              "value": "native-ntp",
+              "label": "pyatv · Persistent connection (NTP)"
+            },
+            {
+              "value": "native",
+              "label": "pyatv · Persistent connection (compatible mode)"
+            },
+            {
+              "value": "auto",
+              "label": "pyatv · automatisch"
+            },
+            {
+              "value": "1",
+              "label": "pyatv · AirPlay 1"
+            },
+            {
+              "value": "2",
+              "label": "pyatv · AirPlay 2"
+            }
+          ]
+        },
+        "devices": {
+          "type": "table",
+          "label": "Custom names and transport modes (optional)",
+          "sm": 12,
+          "items": [
+            {
+              "type": "text",
+              "attr": "name",
+              "title": "Name",
+              "width": "30%"
+            },
+            {
+              "type": "text",
+              "attr": "address",
+              "title": "IPv4-Adresse",
+              "width": "25%"
+            },
+            {
+              "type": "select",
+              "attr": "kind",
+              "title": "Symbol",
+              "default": "speaker",
+              "options": [
+                {
+                  "value": "speaker",
+                  "label": "Speaker"
+                },
+                {
+                  "value": "soundbar",
+                  "label": "Soundbar"
+                },
+                {
+                  "value": "tv",
+                  "label": "TV"
+                }
+              ]
+            },
+            {
+              "type": "select",
+              "attr": "mode",
+              "title": "Transport mode",
+              "default": "native-ntp",
+              "options": [
+                {
+                  "value": "native-ntp",
+                  "label": "pyatv · Persistent connection (NTP)"
+                },
+                {
+                  "value": "native",
+                  "label": "pyatv · Persistent connection (compatible mode)"
+                },
+                {
+                  "value": "auto",
+                  "label": "pyatv automatic"
+                },
+                {
+                  "value": "1",
+                  "label": "pyatv AirPlay 1"
+                },
+                {
+                  "value": "2",
+                  "label": "pyatv AirPlay 2"
+                }
+              ]
+            }
+          ]
+        },
+        "_limits": {
+          "type": "staticText",
+          "text": "Receivers are served in parallel, with separate results in history. PIN pairing is available in the interface. Compatibility and acoustic timing depend on each receiver.",
+          "sm": 12
+        }
+      }
+    },
+    "migration": {
+      "type": "panel",
+      "label": "Import and backup",
+      "items": {
+        "importPrototype": {
+          "type": "checkbox",
+          "label": "Import legacy configuration once (instance 0 only)",
+          "help": "Imports history, receiver selection and verified speech/runtime files from the legacy data directory. Disable the previous speech sender before first use. Existing adapter data is not overwritten.",
+          "sm": 12
+        },
+        "legacyBridge": {
+          "type": "checkbox",
+          "label": "Support legacy 0_userdata states (instance 0 only)",
+          "help": "Existing AirPlayMM commands remain available. Feedback is mirrored with acknowledgement. The legacy sender must not run simultaneously.",
+          "sm": 12
+        },
+        "sayitInstances": {
+          "type": "chips",
+          "label": "Accept SayIt commands (optional)",
+          "help": "For example sayit.0. Selected SayIt instances must remain disabled. New tts.text commands are spoken; tts.cachetext prepares text without playback. Blank: disabled.",
+          "sm": 12
+        },
+        "_backup": {
+          "type": "staticText",
+          "text": "The airplay-mm.<instance> directory is registered as the dataFolder for ioBroker backups. It contains history, settings, voices and runtime. The isolated Python environment may need rebuilding after restoring to different hardware. Legacy data is preserved.",
+          "sm": 12
+        },
+        "_updates": {
+          "type": "staticText",
+          "text": "Install versioned .tgz packages through ioBroker Admin. Settings and history remain in the instance data directory. Local Piper speech does not require a cloud account or subscription.",
+          "sm": 12
+        }
+      }
+    }
+  }
+}

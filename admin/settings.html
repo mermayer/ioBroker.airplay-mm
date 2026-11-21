@@ -1,0 +1,46 @@
+<nav class="admin-tabs" role="tablist" aria-label="Adapter sections">
+  <button type="button" id="tab-speech" role="tab" aria-controls="panel-speech" aria-selected="true">Speech output</button>
+  <button type="button" id="tab-settings" role="tab" aria-controls="panel-settings" aria-selected="false">Settings</button>
+</nav>
+<!-- SPEECH -->
+<section id="panel-settings" class="settings-panel" role="tabpanel" aria-labelledby="tab-settings" hidden>
+  <div class="intro"><h1>Settings</h1><p>Speech provider, network, volume and preset receivers.</p></div>
+  <div class="settings-grid">
+    <label>Speech provider<select class="browser-default" id="setting-speechProvider"><option value="piper">Piper · Local voice</option><option value="sayit-google">SayIt · Google German · New texts online</option><option value="speechify">Speechify · Runa · Ramona fallback</option></select><small>The saved provider is used for sample texts and AirPlay announcements. Completed announcements are reused locally. Speechify generates new texts online; Ramona provides fallback on errors.</small></label>
+    <label id="piper-voice-field">Local voice<select class="browser-default" id="setting-piperVoice"><option value="de_DE-thorsten-medium">Thorsten · Male · Medium</option><option value="de_DE-ramona-low">Ramona · Female · Low</option></select><small>The voice is downloaded when first selected. New texts are then generated offline. Prepare text and Start announcement use the saved voice.</small></label>
+    <div class="pre-roll-option"><label class="checkbox-label"><input id="setting-airplayPreRollEnabled" type="checkbox">Enable silent pre-roll</label><small>Helps protect a quiet or clipped announcement beginning. Applies to persistent pyatv modes.</small></div>
+    <label>Pre-roll (milliseconds)<input id="setting-airplayPreRollMs" type="number" min="0" max="2000" step="50"><small>1,000 ms = 1 second. Default: 700 ms. Without pre-roll, some receivers may attenuate the beginning.</small></label>
+    <label>Local network address<input id="setting-bind" placeholder="Automatic" autocomplete="off"><small>IPv4 address of the ioBroker host. Blank: select automatically.</small></label>
+    <label>Additional direct interface port<input id="setting-port" type="number" min="1024" max="65535" step="1"><small>The ioBroker interface uses the Admin connection.</small></label>
+    <label>Maximum announcement volume (%)<input id="setting-maxVolume" type="number" min="1" max="100" step="1"><small>Limits the volume requested from the receiver.</small></label>
+    <label>Discovery network<input id="setting-network" placeholder="For example 192.168.1.0/24" autocomplete="off"><small>Blank: network of the selected interface. The entire IP range is not scanned.</small></label>
+    <label>Additional known receiver addresses<textarea id="setting-seedHosts" rows="3" placeholder="One IPv4 address per line"></textarea><small>Up to 32 addresses on the local discovery network.</small></label>
+    <label>Default transport mode<select class="browser-default" id="setting-defaultMode"><option value="native-ntp">pyatv · Persistent connection (NTP)</option><option value="native">pyatv · Persistent connection (automatic)</option><option value="auto">pyatv · File, automatic</option><option value="1">pyatv · File, AirPlay 1</option><option value="2">pyatv · File, AirPlay 2</option></select><small>The first two modes support persistent connections with NTP. The other modes send individual files.</small></label>
+  </div>
+  <section class="speechify-settings" aria-label="Speechify und Alexa learning mode">
+    <h2>Speechify · Runa</h2>
+    <p class="receiver-note">German · Simba 3.5. The API key is stored using ioBroker encryption and is not sent back to the interface.</p>
+    <div class="secret-row"><label>API key<input type="password" id="speechify-api-key" autocomplete="new-password" placeholder="Enter a new API key"></label><button type="button" class="secondary compact" id="speechify-save-key">Save key</button><button type="button" class="secondary compact" id="speechify-remove-key">Remove key</button></div>
+    <p id="speechify-key-status" class="receiver-note" role="status">Loading key status …</p>
+    <label class="checkbox-label"><input type="checkbox" id="setting-alexaLearningEnabled">Prepare Alexa texts with Runa in the background</label>
+    <p class="receiver-note">Alexa continues speaking. Only new writes to speak, announcement and ssml are read. Learning mode does not play audio or modify Alexa states.</p>
+    <label>Alexa instances<input id="setting-alexaInstances" placeholder="alexa2.0" autocomplete="off"></label>
+  </section>
+  <div class="settings-grid" style="margin-top:18px"><label>Accept SayIt commands (optional)<input id="setting-sayitInstances" placeholder="For example sayit.0" autocomplete="off"><small>Accepts new writes to tts.text and prepares tts.cachetext without playback. Selected SayIt instances must remain disabled. Blank: disabled.</small></label></div>
+  <div class="section-heading"><h2>Preset receivers</h2><button type="button" id="settings-add" class="secondary compact">Add receiver</button></div>
+  <p class="receiver-note">Optional: custom names, icons and transport modes. Discovered devices appear under Speech output.</p>
+  <div id="settings-devices" class="settings-devices"></div>
+  <details class="advanced-settings"><summary>Connections and timing</summary>
+    <label class="checkbox-label"><input type="checkbox" id="setting-keepAliveEnabled">Keep connections open after announcements</label>
+    <label class="device-field">Release after inactivity (seconds)<input type="number" id="setting-keepAliveSeconds" min="0" max="3600" step="1"><small>Default: 300 seconds. 0 retains the connection until manual release, takeover by another sender or restart. A persistent connection can occupy the receiver AirPlay input.</small></label>
+  </details>
+  <details class="advanced-settings"><summary>Backup and compatibility</summary>
+    <p>History, settings, voices and runtime are stored in the ioBroker instance backup directory. Updates preserve this directory.</p>
+    <label class="checkbox-label"><input type="checkbox" id="setting-importPrototype">Keep existing data import</label>
+    <label class="checkbox-label"><input type="checkbox" id="setting-legacyBridge">Support legacy 0_userdata states (instance 0)</label>
+    <p>Updates preserve existing data.</p>
+  </details>
+  <p id="settings-running" class="receiver-note" hidden>Wait for active and queued announcements before saving.</p>
+  <div class="settings-actions"><button type="button" class="primary" id="settings-save" disabled>Save settings</button><button type="button" class="secondary" id="settings-reset">Discard changes</button></div>
+  <p id="config-notice" class="notice" role="status" hidden></p>
+</section>

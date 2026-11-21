@@ -1,0 +1,4 @@
+* text=auto eol=lf
+LICENSE whitespace=-blank-at-eof
+licenses/*.txt whitespace=-blank-at-eof
+*.svg text eol=lf

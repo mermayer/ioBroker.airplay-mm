@@ -1,0 +1,45 @@
+AirPlay MM
+Copyright (c) 2026 mermayer
+Licensed under GPL-3.0-or-later. See LICENSE.
+
+AirPlay transport and pairing use pyatv 0.18.0 (MIT).
+https://github.com/postlund/pyatv
+The pyatv copyright and license are included in licenses/pyatv-MIT.txt.
+
+Local speech synthesis uses Piper 1.8.0 (GPL-3.0-or-later).
+https://github.com/OHF-Voice/piper1-gpl
+Piper and its dependencies are installed separately into the adapter data
+directory. Their original copyright and license notices remain applicable.
+
+ioBroker adapter-core and types are used under MIT licenses.
+https://github.com/ioBroker/adapter-core
+https://github.com/ioBroker/ioBroker.types
+Copies are included in licenses/adapter-core-MIT.txt and
+licenses/ioBroker-types-MIT.txt. The validation schemas in test/ originate
+from ioBroker.admin and ioBroker.js-controller, also under MIT; their
+copyright and license notices are included in licenses/.
+
+Other direct Python dependencies:
+- aiohttp: Apache-2.0, with its bundled llhttp code under MIT.
+- miniaudio Python wrapper: MIT.
+- srptools: BSD-3-Clause.
+Their license notices are included in licenses/. Runtime dependencies and
+transitive packages are installed from their original distributions and
+retain their own copyright, license files and package metadata.
+
+Optional SayIt speech generation uses an installed ioBroker.sayit adapter.
+Its MIT license is included in licenses/SayIt-MIT.txt.
+https://github.com/ioBroker/ioBroker.sayit
+
+Thorsten voice data is CC0. A model card is included in
+licenses/Thorsten-MODEL-CARD.txt. Selected models are downloaded separately.
+Ramona model and dataset terms are described in the model card downloaded
+with that voice. Voice models are not bundled with this source distribution.
+https://huggingface.co/rhasspy/piper-voices
+
+Speechify is an optional external API. No Speechify source code or voice
+models are included. Use is subject to the account and API terms.
+https://speechify.com/api/
+
+Apple, AirPlay and HomePod are trademarks of Apple Inc.
+This project is independent and is not endorsed or certified by Apple.
