@@ -4,6 +4,10 @@ An ioBroker adapter for text-to-speech announcements on AirPlay receivers,
 including HomePod and other compatible speakers. Generate speech locally with
 Piper, through SayIt, or with Speechify, and reuse it from a persistent cache.
 
+**Public beta for testing and community development.** The complete adapter
+currently targets Linux x86-64. Receiver compatibility depends on the device
+and its firmware; review the requirements and network notes before installing.
+
 ## Features
 
 - AirPlay 1 and AirPlay 2 transport and PIN pairing using pyatv.
@@ -29,6 +33,27 @@ texts that are not cached. Speechify requires your own API key. Dependencies
 and models are installed into the instance data directory; no voice models or
 account credentials are bundled with the adapter.
 
+## Installation
+
+Download the [0.1.0-beta.2 package](https://github.com/mermayer/ioBroker.airplay-mm/releases/download/v0.1.0-beta.2/iobroker.airplay-mm-0.1.0-beta.2.tgz)
+from [GitHub Releases](https://github.com/mermayer/ioBroker.airplay-mm/releases).
+In ioBroker Admin, use custom-source installation and supply the package URL.
+The source code and release downloads are public and require no GitHub invitation
+or access token. This beta is distributed through GitHub; inclusion in the
+official ioBroker adapter repository is a separate process.
+
+To build an installation archive from source on a supported Linux host:
+
+```sh
+git clone https://github.com/mermayer/ioBroker.airplay-mm.git
+cd ioBroker.airplay-mm
+npm ci --ignore-scripts
+npm run build
+npm pack --ignore-scripts
+```
+
+Install the resulting `.tgz` through ioBroker Admin's custom-source workflow.
+
 ## Quick start
 
 1. Install the adapter using ioBroker Admin and create an instance.
@@ -41,12 +66,6 @@ account credentials are bundled with the adapter.
 6. If pairing is required, choose **Pair** and enter the PIN from the receiver.
 7. Enter text and choose **Start announcement**. **Prepare text** generates and
    caches speech without playing it.
-
-While this repository is private, an ioBroker host needs authorized access to
-install directly from it. Alternatively, use an authenticated checkout, run
-`npm ci --ignore-scripts`, `npm run build` and `npm pack --ignore-scripts`, and
-install the archive through your usual ioBroker custom-source workflow. Do not
-embed GitHub tokens in installation URLs or configuration files.
 
 ## Announcements from ioBroker scripts
 
@@ -140,6 +159,16 @@ npm run test:python
 Automated tests use isolated fixtures and local protocol receivers. They do not
 contact real speakers, require cloud accounts, install Piper or download models.
 CI covers Node.js 22 and 24, and Python 3.11–3.13.
+
+## Contributing and reporting problems
+
+Fork the repository and submit changes as a pull request. Use
+[GitHub Issues](https://github.com/mermayer/ioBroker.airplay-mm/issues) to report
+problems, including the adapter version, operating system, Node.js/Python
+versions, receiver model and relevant sanitized logs. Remove API keys, pairing
+credentials, personal announcement text and private network details from reports.
+
+See the developer guide before changing the pinned transport dependencies.
 
 ## License and acknowledgements
 
