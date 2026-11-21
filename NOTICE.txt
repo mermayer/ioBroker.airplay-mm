@@ -27,6 +27,10 @@ Their license notices are included in licenses/. Runtime dependencies and
 transitive packages are installed from their original distributions and
 retain their own copyright, license files and package metadata.
 
+Development formatting uses Prettier under MIT. Its license is included in
+licenses/Prettier-MIT.txt. Prettier is a development dependency, not part of
+the adapter runtime.
+
 Optional SayIt speech generation uses an installed ioBroker.sayit adapter.
 Its MIT license is included in licenses/SayIt-MIT.txt.
 https://github.com/ioBroker/ioBroker.sayit

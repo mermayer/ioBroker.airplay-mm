@@ -1,0 +1,5 @@
+node_modules/
+test/.tmp/
+licenses/
+test/config-schema.json
+test/io-schema.json

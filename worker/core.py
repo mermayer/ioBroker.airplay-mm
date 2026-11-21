@@ -15,7 +15,7 @@ import uuid
 from audio_gain import validate_gain
 
 LOG = logging.getLogger('airplay-mm')
-VERSION = '0.1.0-beta.1'
+VERSION = '0.1.0-beta.2'
 TERMINAL = {'completed', 'partial', 'failed', 'cancelled', 'interrupted'}
 
 

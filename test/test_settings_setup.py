@@ -85,16 +85,18 @@ class SetupTests(unittest.TestCase):
             setup_runtime.install_asset(self.root, 'voices/test.onnx')
         request.assert_not_called()
 
-    def test_only_verified_legacy_assets_are_copied(self):
-        legacy = self.root.parent / 'airplay-mm'
-        (legacy / 'voices').mkdir(parents=True)
-        source = legacy / 'voices' / 'test.onnx'
-        source.write_bytes(self.data)
-        with patch.dict(setup_runtime.ASSETS, self.asset, clear=True), patch('setup_runtime.urllib.request.urlopen') as request:
-            setup_runtime.install_asset(self.root, 'voices/test.onnx', legacy)
-        request.assert_not_called()
+    def test_missing_assets_are_downloaded_without_importing_sibling_data(self):
+        sibling = self.root.parent / 'old-runtime'
+        (sibling / 'voices').mkdir(parents=True)
+        source = sibling / 'voices' / 'test.onnx'
+        source.write_bytes(b'outdated sibling model')
+        with patch.dict(setup_runtime.ASSETS, self.asset, clear=True), patch(
+            'setup_runtime.urllib.request.urlopen', return_value=io.BytesIO(self.data)
+        ) as request:
+            setup_runtime.install_asset(self.root, 'voices/test.onnx')
+        request.assert_called_once()
         self.assertEqual((self.root / 'voices' / 'test.onnx').read_bytes(), self.data)
-        self.assertEqual(source.read_bytes(), self.data)
+        self.assertEqual(source.read_bytes(), b'outdated sibling model')
 
     def test_mismatched_download_is_rejected_and_temporary_file_removed(self):
         with patch.dict(setup_runtime.ASSETS, self.asset, clear=True), patch('setup_runtime.urllib.request.urlopen', return_value=io.BytesIO(b'corrupt')):

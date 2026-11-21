@@ -1,8 +1,11 @@
 {
   "common": {
     "name": "airplay-mm",
-    "version": "0.1.0-beta.1",
+    "version": "0.1.0-beta.2",
     "news": {
+      "0.1.0-beta.2": {
+        "en": "Improve source readability, remove prototype-only migration and state forwarding, complete English messages, and document pyatv maintenance."
+      },
       "0.1.0-beta.1": {
         "en": "Initial AirPlay MM release with pyatv, local and cloud text-to-speech, a persistent speech cache, pairing and multi-receiver announcements."
       }
@@ -13,19 +16,12 @@
     "desc": {
       "en": "AirPlay text-to-speech announcements for ioBroker with local and cloud voices, persistent caching and multiple receivers"
     },
-    "authors": [
-      "mermayer"
-    ],
+    "authors": ["mermayer"],
     "licenseInformation": {
       "type": "free",
       "license": "GPL-3.0-or-later"
     },
-    "keywords": [
-      "AirPlay",
-      "Piper",
-      "TTS",
-      "local"
-    ],
+    "keywords": ["AirPlay", "Piper", "TTS", "local"],
     "platform": "Javascript/Node.js",
     "mode": "daemon",
     "type": "multimedia",
@@ -66,8 +62,6 @@
     "devices": [],
     "defaultMode": "native-ntp",
     "maxVolume": 40,
-    "importPrototype": false,
-    "legacyBridge": false,
     "sayitInstances": [],
     "speechProvider": "piper",
     "piperVoice": "de_DE-thorsten-medium",
@@ -76,9 +70,7 @@
     "keepAliveEnabled": true,
     "keepAliveSeconds": 300,
     "alexaLearningEnabled": false,
-    "alexaInstances": [
-      "alexa2.0"
-    ]
+    "alexaInstances": ["alexa2.0"]
   },
   "objects": [],
   "instanceObjects": [

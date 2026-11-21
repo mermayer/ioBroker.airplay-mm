@@ -118,7 +118,7 @@ class SpeechifyService:
                                              'language': 'de-DE', 'audio_format': 'wav'}, allow_redirects=False) as response:
                     if response.status != 200:
                         messages = {401: 'API key was not accepted', 403: 'Access denied',
-                                    429: 'Kontingent oder Anfragelimit erreicht'}
+                                    429: 'Quota or request limit reached'}
                         retry = response.headers.get('Retry-After', '30')
                         retry = min(300, max(5, int(retry))) if retry.isdigit() else 30
                         raise SpeechifyError('Speechify HTTP ' + str(response.status) + ': ' + messages.get(response.status, 'Speech generation rejected'),

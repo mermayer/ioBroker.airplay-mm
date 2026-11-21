@@ -59,22 +59,27 @@ setState('airplay-mm.0.say', 'The window is open.');
 Specify a receiver using its ID from the receiver list:
 
 ```javascript
-sendTo('airplay-mm.0', 'speak', {
+sendTo(
+  'airplay-mm.0',
+  'speak',
+  {
     text: 'The announcement is ready.',
     target: 'receiver-id',
-    volume: 20
-}, result => {
+    volume: 20,
+  },
+  (result) => {
     if (!result.ok) log(result.error, 'warn');
-});
+  },
+);
 ```
 
 For multiple receivers, supply `targets` instead of `target`:
 
 ```javascript
 sendTo('airplay-mm.0', 'speak', {
-    text: 'Please close the windows.',
-    targets: ['receiver-id-1', 'receiver-id-2'],
-    volume: 20
+  text: 'Please close the windows.',
+  targets: ['receiver-id-1', 'receiver-id-2'],
+  volume: 20,
 });
 ```
 
@@ -118,9 +123,14 @@ port to the internet. Keep instance data and backups private.
 
 ## Development
 
+See [DEVELOPMENT.md](DEVELOPMENT.md) for the module layout, the intentionally
+pinned pyatv internals, and the dependency update procedure.
+
 ```sh
 npm ci --ignore-scripts
+npm run format
 npm run build
+npm run format:check
 npm run check
 npm test
 python -m pip install -r requirements-test.txt

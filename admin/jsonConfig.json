@@ -24,7 +24,7 @@
           "onlyIp4": true,
           "noInternal": true,
           "listenOnAllPorts": false,
-          "help": "Blank: import the legacy address or select automatically. With multiple interfaces, choose the address on the receiver network.",
+          "help": "Blank: select automatically. With multiple interfaces, choose the address on the receiver network.",
           "sm": 8
         },
         "port": {
@@ -66,15 +66,15 @@
           "options": [
             {
               "value": "piper",
-              "label": "Piper · Thorsten · Fully local"
+              "label": "Piper \u00b7 Thorsten \u00b7 Fully local"
             },
             {
               "value": "sayit-google",
-              "label": "SayIt · Google German · New texts online"
+              "label": "SayIt \u00b7 Google German \u00b7 New texts online"
             },
             {
               "value": "speechify",
-              "label": "Speechify · Runa · Ramona fallback"
+              "label": "Speechify \u00b7 Runa \u00b7 Ramona fallback"
             }
           ],
           "help": "SayIt must be installed on the same host. Speech is generated without starting the SayIt instance. Completed announcements use the adapter cache.",
@@ -86,11 +86,11 @@
           "options": [
             {
               "value": "de_DE-thorsten-medium",
-              "label": "Thorsten · Male · Medium"
+              "label": "Thorsten \u00b7 Male \u00b7 Medium"
             },
             {
               "value": "de_DE-ramona-low",
-              "label": "Ramona · Female · Low"
+              "label": "Ramona \u00b7 Female \u00b7 Low"
             }
           ],
           "hidden": "data.speechProvider === 'sayit-google'",
@@ -144,13 +144,13 @@
         "network": {
           "type": "text",
           "label": "Discovery network (optional)",
-          "help": "For example 192.168.1.0/24. Blank: use the legacy setting or selected interface network. Discovery uses mDNS and known addresses, without scanning the entire IP range.",
+          "help": "For example 192.168.1.0/24. Blank: use the selected interface network. Discovery uses mDNS and known addresses, without scanning the entire IP range.",
           "sm": 12
         },
         "seedHosts": {
           "type": "chips",
           "label": "Additional known IPv4 addresses",
-          "help": "Up to 32 local addresses in the discovery network. Blank: import legacy addresses if enabled.",
+          "help": "Up to 32 local addresses in the discovery network. Blank: use discovery.",
           "sm": 12
         },
         "defaultMode": {
@@ -160,23 +160,23 @@
           "options": [
             {
               "value": "native-ntp",
-              "label": "pyatv · Persistent connection (NTP)"
+              "label": "pyatv \u00b7 Persistent connection (NTP)"
             },
             {
               "value": "native",
-              "label": "pyatv · Persistent connection (compatible mode)"
+              "label": "pyatv \u00b7 Persistent connection (compatible mode)"
             },
             {
               "value": "auto",
-              "label": "pyatv · automatisch"
+              "label": "pyatv \u00b7 automatisch"
             },
             {
               "value": "1",
-              "label": "pyatv · AirPlay 1"
+              "label": "pyatv \u00b7 AirPlay 1"
             },
             {
               "value": "2",
-              "label": "pyatv · AirPlay 2"
+              "label": "pyatv \u00b7 AirPlay 2"
             }
           ]
         },
@@ -225,11 +225,11 @@
               "options": [
                 {
                   "value": "native-ntp",
-                  "label": "pyatv · Persistent connection (NTP)"
+                  "label": "pyatv \u00b7 Persistent connection (NTP)"
                 },
                 {
                   "value": "native",
-                  "label": "pyatv · Persistent connection (compatible mode)"
+                  "label": "pyatv \u00b7 Persistent connection (compatible mode)"
                 },
                 {
                   "value": "auto",
@@ -256,20 +256,8 @@
     },
     "migration": {
       "type": "panel",
-      "label": "Import and backup",
+      "label": "Backup",
       "items": {
-        "importPrototype": {
-          "type": "checkbox",
-          "label": "Import legacy configuration once (instance 0 only)",
-          "help": "Imports history, receiver selection and verified speech/runtime files from the legacy data directory. Disable the previous speech sender before first use. Existing adapter data is not overwritten.",
-          "sm": 12
-        },
-        "legacyBridge": {
-          "type": "checkbox",
-          "label": "Support legacy 0_userdata states (instance 0 only)",
-          "help": "Existing AirPlayMM commands remain available. Feedback is mirrored with acknowledgement. The legacy sender must not run simultaneously.",
-          "sm": 12
-        },
         "sayitInstances": {
           "type": "chips",
           "label": "Accept SayIt commands (optional)",
@@ -278,7 +266,7 @@
         },
         "_backup": {
           "type": "staticText",
-          "text": "The airplay-mm.<instance> directory is registered as the dataFolder for ioBroker backups. It contains history, settings, voices and runtime. The isolated Python environment may need rebuilding after restoring to different hardware. Legacy data is preserved.",
+          "text": "The airplay-mm.<instance> directory is registered as the dataFolder for ioBroker backups. It contains history, settings, voices and runtime. The isolated Python environment may need rebuilding after restoring to different hardware.",
           "sm": 12
         },
         "_updates": {

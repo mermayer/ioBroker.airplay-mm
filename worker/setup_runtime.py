@@ -8,7 +8,6 @@ import json
 import os
 from pathlib import Path
 import platform
-import shutil
 import subprocess
 import sys
 import time
@@ -47,7 +46,7 @@ def digest(path: Path):
         return hashlib.file_digest(source, 'sha256').hexdigest()
 
 
-def install_asset(root: Path, relative: str, legacy: Path | None = None, assets=None):
+def install_asset(root: Path, relative: str, assets=None):
     base, expected, limit = (ASSETS if assets is None else assets)[relative]
     destination = root / relative
     if destination.parent.is_symlink():
@@ -61,18 +60,14 @@ def install_asset(root: Path, relative: str, legacy: Path | None = None, assets=
     if temporary.is_symlink():
         raise ValueError('Unexpected download link')
     try:
-        source = legacy / relative if legacy else None
-        if source and source.is_file() and not source.is_symlink() and source.stat().st_size <= limit and digest(source) == expected:
-            shutil.copyfile(source, temporary)
-        else:
-            emit('Downloading local voice file' if relative.startswith('voices/') else 'Downloading AirPlay sender')
-            count = 0
-            with urllib.request.urlopen(base + destination.name, timeout=45) as response, temporary.open('wb') as output:
-                while chunk := response.read(1024 * 1024):
-                    count += len(chunk)
-                    if count > limit:
-                        raise ValueError('Download exceeds size limit')
-                    output.write(chunk)
+        emit('Downloading local voice file' if relative.startswith('voices/') else 'Downloading AirPlay sender')
+        count = 0
+        with urllib.request.urlopen(base + destination.name, timeout=45) as response, temporary.open('wb') as output:
+            while chunk := response.read(1024 * 1024):
+                count += len(chunk)
+                if count > limit:
+                    raise ValueError('Download exceeds size limit')
+                output.write(chunk)
         if digest(temporary) != expected:
             raise ValueError('Checksum does not match: ' + destination.name)
         temporary.chmod(0o600)
@@ -86,7 +81,7 @@ def checked_root(value: str):
     if root.resolve() != root or root.is_symlink() or not root.name.startswith('airplay-mm.') or not root.name.split('.')[-1].isdigit():
         raise ValueError('Unexpected adapter data directory')
     root.mkdir(mode=0o700, parents=True, exist_ok=True)
-    for name in ['bin', 'voices', 'cache', 'logs']:
+    for name in ['voices', 'cache', 'logs']:
         folder = root / name
         if folder.is_symlink():
             raise ValueError('Unexpected directory link')
@@ -122,7 +117,7 @@ def ensure_venv(root: Path, log):
     result = subprocess.run([str(python), '-c', check], capture_output=True, text=True, timeout=20)
     if result.returncode == 0 and json.loads(result.stdout) == PACKAGES:
         return python
-    emit('Richte isolierte Python-Pakete ein · dies kann einige Minuten dauern')
+    emit('Installing isolated Python packages · this may take a few minutes')
     if subprocess.run([str(python), '-m', 'pip', '--version'], stdout=log, stderr=log, timeout=15).returncode:
         with urllib.request.urlopen('https://pypi.org/pypi/pip/json', timeout=30) as response:
             metadata = json.load(response)
@@ -148,11 +143,6 @@ def main(args):
     if sys.version_info < (3, 11) or sys.version_info >= (3, 14) or sys.platform != 'linux' or platform.machine() != 'x86_64':
         raise ValueError('Requires Linux x64 with Python 3.11 to 3.13')
     root = checked_root(args.root)
-    legacy = None
-    if args.legacy:
-        legacy = Path(args.legacy).absolute()
-        if legacy != root.parent / 'airplay-mm' or legacy.resolve() != legacy or legacy.is_symlink():
-            raise ValueError('Unexpected legacy source path')
     log_path = root / 'logs' / 'installation.log'
     if log_path.exists() and log_path.stat().st_size > 500_000:
         log_path.replace(log_path.with_suffix('.previous.log'))
@@ -161,7 +151,7 @@ def main(args):
         assets = selected_assets(args.voice)
         emit('Checking local voice: ' + voice_spec(args.voice)['name'])
         for relative in assets:
-            install_asset(root, relative, legacy, assets)
+            install_asset(root, relative, assets=assets)
         subprocess.run([str(python), '-c', 'import pyatv,piper,miniaudio,aiohttp'], check=True, timeout=30, stdout=log, stderr=log)
     (root / 'runtime-installed.json').write_text(json.dumps({'schema': 1, 'packages': PACKAGES, 'verifiedAt': time.time()}, indent=2), encoding='utf-8')
     print(json.dumps({'installed': True, 'root': str(root), 'python': str(python), 'pythonVersion': platform.python_version()}, ensure_ascii=True), flush=True)
@@ -170,7 +160,6 @@ def main(args):
 if __name__ == '__main__':
     parser = argparse.ArgumentParser()
     parser.add_argument('--root', required=True)
-    parser.add_argument('--legacy')
     parser.add_argument('--voice', default=DEFAULT_VOICE)
     try:
         main(parser.parse_args())

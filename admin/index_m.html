@@ -1,123 +1,382 @@
 <!doctype html>
 <html lang="en">
-<head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width,initial-scale=1">
-  <meta name="theme-color" content="#087f78">
-  <title>AirPlay MM</title>
-  <link rel="icon" type="image/svg+xml" href="./airplay-mm.svg">
-  <link rel="stylesheet" href="./app.css">
-  <link rel="stylesheet" href="./admin.css">
-  <script src="./device-icons.js" defer></script>
-  <script src="./config-model.js" defer></script>
-  <script src="./admin.js" defer></script>
-  <script src="./app.js" defer></script>
-</head>
-<body>
-  <div class="shell">
-    <header class="topbar">
-      <div class="brand"><img src="./airplay-mm.svg" alt="" width="60" height="45"><span>AirPlay MM</span></div>
-      <div class="connection" role="status"><span class="status-dot" id="status-dot"></span><span id="status">Connecting …</span></div>
-    </header>
-    <nav class="admin-tabs" role="tablist" aria-label="Adapter sections">
-  <button type="button" id="tab-speech" role="tab" aria-controls="panel-speech" aria-selected="true">Speech output</button>
-  <button type="button" id="tab-settings" role="tab" aria-controls="panel-settings" aria-selected="false">Settings</button>
-</nav>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <meta name="theme-color" content="#087f78" />
+    <title>AirPlay MM</title>
+    <link rel="icon" type="image/svg+xml" href="./airplay-mm.svg" />
+    <link rel="stylesheet" href="./app.css" />
+    <link rel="stylesheet" href="./admin.css" />
+    <script src="./device-icons.js" defer></script>
+    <script src="./config-model.js" defer></script>
+    <script src="./admin.js" defer></script>
+    <script src="./app.js" defer></script>
+  </head>
+  <body>
+    <div class="shell">
+      <header class="topbar">
+        <div class="brand">
+          <img src="./airplay-mm.svg" alt="" width="60" height="45" /><span>AirPlay MM</span>
+        </div>
+        <div class="connection" role="status">
+          <span class="status-dot" id="status-dot"></span><span id="status">Connecting …</span>
+        </div>
+      </header>
+      <nav class="admin-tabs" role="tablist" aria-label="Adapter sections">
+        <button type="button" id="tab-speech" role="tab" aria-controls="panel-speech" aria-selected="true">
+          Speech output
+        </button>
+        <button
+          type="button"
+          id="tab-settings"
+          role="tab"
+          aria-controls="panel-settings"
+          aria-selected="false"
+        >
+          Settings
+        </button>
+      </nav>
 
-    <main>
-    <section id="panel-speech" role="tabpanel" aria-labelledby="tab-speech">
-      <div class="intro"><h1>Speech output</h1><p>Local announcements over AirPlay.</p></div>
-      <p id="adapter-error" class="notice" role="alert" hidden></p>
-      <div class="setup-actions"><button type="button" class="secondary compact" id="setup-retry" hidden>Retry setup</button></div>
-      <div class="workspace">
-        <section class="receivers" aria-labelledby="receivers-title">
-          <div class="section-heading"><h2 id="receivers-title">Receiver</h2><button class="secondary compact" id="discover"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20 7v5h-5M4 17v-5h5M5.8 7a7 7 0 0 1 11.5-1L20 9M4 15l2.7 3A7 7 0 0 0 18.2 17"/></svg><span>Search</span></button></div>
-          <div id="devices" class="device-list" role="group" aria-label="AirPlay receivers"></div>
-          <label class="checkbox-label multi-select"><input type="checkbox" id="multi-targets">Select multiple receivers</label>
-          <p class="receiver-note" id="receiver-note">One receiver per announcement</p>
-          <section id="pair-panel" class="pair-panel" aria-label="AirPlay pairing" hidden>
-            <h2 id="pair-title">Pair receiver</h2>
-            <p id="pair-status" role="status"></p>
-            <form id="pair-form">
-              <label class="device-field" id="pair-pin-field">Receiver PIN<input class="browser-default" id="pair-pin" type="password" inputmode="numeric" autocomplete="one-time-code" maxlength="10" aria-label="Receiver PIN"></label>
-              <div class="actions"><button type="submit" class="secondary compact" id="pair-submit">Confirm PIN</button><button type="button" class="secondary compact" id="pair-cancel">Cancel</button></div>
-            </form>
+      <main>
+        <section id="panel-speech" role="tabpanel" aria-labelledby="tab-speech">
+          <div class="intro">
+            <h1>Speech output</h1>
+            <p>Local announcements over AirPlay.</p>
+          </div>
+          <p id="adapter-error" class="notice" role="alert" hidden></p>
+          <div class="setup-actions">
+            <button type="button" class="secondary compact" id="setup-retry" hidden>Retry setup</button>
+          </div>
+          <div class="workspace">
+            <section class="receivers" aria-labelledby="receivers-title">
+              <div class="section-heading">
+                <h2 id="receivers-title">Receiver</h2>
+                <button class="secondary compact" id="discover">
+                  <svg viewBox="0 0 24 24" aria-hidden="true">
+                    <path
+                      d="M20 7v5h-5M4 17v-5h5M5.8 7a7 7 0 0 1 11.5-1L20 9M4 15l2.7 3A7 7 0 0 0 18.2 17"
+                    /></svg
+                  ><span>Search</span>
+                </button>
+              </div>
+              <div id="devices" class="device-list" role="group" aria-label="AirPlay receivers"></div>
+              <label class="checkbox-label multi-select"
+                ><input type="checkbox" id="multi-targets" />Select multiple receivers</label
+              >
+              <p class="receiver-note" id="receiver-note">One receiver per announcement</p>
+              <section id="pair-panel" class="pair-panel" aria-label="AirPlay pairing" hidden>
+                <h2 id="pair-title">Pair receiver</h2>
+                <p id="pair-status" role="status"></p>
+                <form id="pair-form">
+                  <label class="device-field" id="pair-pin-field"
+                    >Receiver PIN<input
+                      class="browser-default"
+                      id="pair-pin"
+                      type="password"
+                      inputmode="numeric"
+                      autocomplete="one-time-code"
+                      maxlength="10"
+                      aria-label="Receiver PIN"
+                  /></label>
+                  <div class="actions">
+                    <button type="submit" class="secondary compact" id="pair-submit">Confirm PIN</button
+                    ><button type="button" class="secondary compact" id="pair-cancel">Cancel</button>
+                  </div>
+                </form>
+              </section>
+            </section>
+            <section class="composer" aria-labelledby="composer-title">
+              <h2 id="composer-title"><label for="message">What should be announced?</label></h2>
+              <textarea id="message" maxlength="500" rows="5" spellcheck="true">
+Hello. Speech output is ready.</textarea>
+              <div class="counter" id="counter">0 / 500</div>
+              <label class="volume-label" for="volume">Receiver volume</label>
+              <div class="volume-row">
+                <input type="range" id="volume" min="0" max="40" step="1" value="15" /><output
+                  id="volume-value"
+                  for="volume"
+                  >15 %</output
+                >
+              </div>
+              <div class="master-gain-group">
+                <label class="volume-label" for="master-gain">Announcement master gain</label>
+                <div class="volume-row">
+                  <input type="range" id="master-gain" min="0" max="100" step="1" value="100" /><output
+                    id="master-gain-value"
+                    for="master-gain"
+                    >100 %</output
+                  >
+                </div>
+                <p class="receiver-note gain-note">
+                  Attenuates announcements only. Siri and music are unaffected. 100% = original level, 0% =
+                  silent. Applies to the next announcement.
+                </p>
+              </div>
+              <p class="voice" id="voice-label">Loading speech provider …</p>
+              <div class="actions">
+                <button class="primary" id="speak" disabled>
+                  <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5l11 7-11 7z" /></svg
+                  ><span>Start announcement</span></button
+                ><button class="secondary cancel" id="cancel" disabled>Cancel</button
+                ><button class="secondary" id="precache" disabled>Prepare text</button
+                ><button class="secondary" id="sample-text">Use sample text</button>
+              </div>
+              <p class="receiver-note" id="speech-status"></p>
+              <p class="notice" id="notice" role="alert" hidden></p>
+            </section>
+          </div>
+          <section class="learning-status" id="learning-status" hidden aria-label="Alexa learning mode">
+            <h2>Alexa learning mode</h2>
+            <p id="learning-summary" role="status"></p>
+            <button class="secondary compact" id="learning-retry">Retry failed texts</button>
+          </section>
+          <details class="cache-viewer" id="cache-viewer">
+            <summary>View speech cache</summary>
+            <div class="section-heading">
+              <p id="cache-summary">Cache is loaded when opened.</p>
+              <button class="secondary compact" id="cache-refresh">Refresh</button>
+            </div>
+            <p class="receiver-note">
+              Playback uses the cached file and selected receiver. Speechify files are retained; existing
+              Piper and SayIt cache entries are preserved.
+            </p>
+            <div class="history-table">
+              <table>
+                <thead>
+                  <tr>
+                    <th>Text</th>
+                    <th>Voice</th>
+                    <th>Size</th>
+                    <th>Actions</th>
+                  </tr>
+                </thead>
+                <tbody id="cache-entries"></tbody>
+              </table>
+            </div>
+            <div class="actions">
+              <button class="secondary compact" id="cache-prev">Previous</button
+              ><button class="secondary compact" id="cache-next">Next</button>
+            </div>
+          </details>
+          <section class="history" aria-labelledby="history-title">
+            <h2 id="history-title">Recent announcements</h2>
+            <div class="history-table">
+              <table>
+                <thead>
+                  <tr>
+                    <th>Time</th>
+                    <th>Receiver</th>
+                    <th>Message</th>
+                    <th>Result</th>
+                  </tr>
+                </thead>
+                <tbody id="history">
+                  <tr class="empty">
+                    <td colspan="4">No announcements yet.</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
           </section>
         </section>
-        <section class="composer" aria-labelledby="composer-title">
-          <h2 id="composer-title"><label for="message">What should be announced?</label></h2>
-          <textarea id="message" maxlength="500" rows="5" spellcheck="true">Hello. Speech output is ready.</textarea>
-          <div class="counter" id="counter">0 / 500</div>
-          <label class="volume-label" for="volume">Receiver volume</label>
-          <div class="volume-row"><input type="range" id="volume" min="0" max="40" step="1" value="15"><output id="volume-value" for="volume">15 %</output></div>
-          <div class="master-gain-group">
-            <label class="volume-label" for="master-gain">Announcement master gain</label>
-            <div class="volume-row"><input type="range" id="master-gain" min="0" max="100" step="1" value="100"><output id="master-gain-value" for="master-gain">100 %</output></div>
-            <p class="receiver-note gain-note">Attenuates announcements only. Siri and music are unaffected. 100% = original level, 0% = silent. Applies to the next announcement.</p>
+
+        <section
+          id="panel-settings"
+          class="settings-panel"
+          role="tabpanel"
+          aria-labelledby="tab-settings"
+          hidden
+        >
+          <div class="intro">
+            <h1>Settings</h1>
+            <p>Speech provider, network, volume and preset receivers.</p>
           </div>
-        <p class="voice" id="voice-label">Loading speech provider …</p>
-          <div class="actions"><button class="primary" id="speak" disabled><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5l11 7-11 7z"/></svg><span>Start announcement</span></button><button class="secondary cancel" id="cancel" disabled>Cancel</button><button class="secondary" id="precache" disabled>Prepare text</button><button class="secondary" id="sample-text">Use sample text</button></div>
-          <p class="receiver-note" id="speech-status"></p>
-          <p class="notice" id="notice" role="alert" hidden></p>
+          <div class="settings-grid">
+            <label
+              >Speech provider<select class="browser-default" id="setting-speechProvider">
+                <option value="piper">Piper · Local voice</option>
+                <option value="sayit-google">SayIt · Google German · New texts online</option>
+                <option value="speechify">Speechify · Runa · Ramona fallback</option></select
+              ><small
+                >The saved provider is used for sample texts and AirPlay announcements. Completed
+                announcements are reused locally. Speechify generates new texts online; Ramona provides
+                fallback on errors.</small
+              ></label
+            >
+            <label id="piper-voice-field"
+              >Local voice<select class="browser-default" id="setting-piperVoice">
+                <option value="de_DE-thorsten-medium">Thorsten · Male · Medium</option>
+                <option value="de_DE-ramona-low">Ramona · Female · Low</option></select
+              ><small
+                >The voice is downloaded when first selected. New texts are then generated offline. Prepare
+                text and Start announcement use the saved voice.</small
+              ></label
+            >
+            <div class="pre-roll-option">
+              <label class="checkbox-label"
+                ><input id="setting-airplayPreRollEnabled" type="checkbox" />Enable silent pre-roll</label
+              ><small
+                >Helps protect a quiet or clipped announcement beginning. Applies to persistent pyatv
+                modes.</small
+              >
+            </div>
+            <label
+              >Pre-roll (milliseconds)<input
+                id="setting-airplayPreRollMs"
+                type="number"
+                min="0"
+                max="2000"
+                step="50"
+              /><small
+                >1,000 ms = 1 second. Default: 700 ms. Without pre-roll, some receivers may attenuate the
+                beginning.</small
+              ></label
+            >
+            <label
+              >Local network address<input
+                id="setting-bind"
+                placeholder="Automatic"
+                autocomplete="off"
+              /><small>IPv4 address of the ioBroker host. Blank: select automatically.</small></label
+            >
+            <label
+              >Additional direct interface port<input
+                id="setting-port"
+                type="number"
+                min="1024"
+                max="65535"
+                step="1"
+              /><small>The ioBroker interface uses the Admin connection.</small></label
+            >
+            <label
+              >Maximum announcement volume (%)<input
+                id="setting-maxVolume"
+                type="number"
+                min="1"
+                max="100"
+                step="1"
+              /><small>Limits the volume requested from the receiver.</small></label
+            >
+            <label
+              >Discovery network<input
+                id="setting-network"
+                placeholder="For example 192.168.1.0/24"
+                autocomplete="off"
+              /><small
+                >Blank: network of the selected interface. The entire IP range is not scanned.</small
+              ></label
+            >
+            <label
+              >Additional known receiver addresses<textarea
+                id="setting-seedHosts"
+                rows="3"
+                placeholder="One IPv4 address per line"
+              ></textarea
+              ><small>Up to 32 addresses on the local discovery network.</small></label
+            >
+            <label
+              >Default transport mode<select class="browser-default" id="setting-defaultMode">
+                <option value="native-ntp">pyatv · Persistent connection (NTP)</option>
+                <option value="native">pyatv · Persistent connection (automatic)</option>
+                <option value="auto">pyatv · File, automatic</option>
+                <option value="1">pyatv · File, AirPlay 1</option>
+                <option value="2">pyatv · File, AirPlay 2</option></select
+              ><small
+                >The first two modes support persistent connections with NTP. The other modes send individual
+                files.</small
+              ></label
+            >
+          </div>
+          <section class="speechify-settings" aria-label="Speechify und Alexa learning mode">
+            <h2>Speechify · Runa</h2>
+            <p class="receiver-note">
+              German · Simba 3.5. The API key is stored using ioBroker encryption and is not sent back to the
+              interface.
+            </p>
+            <div class="secret-row">
+              <label
+                >API key<input
+                  type="password"
+                  id="speechify-api-key"
+                  autocomplete="new-password"
+                  placeholder="Enter a new API key" /></label
+              ><button type="button" class="secondary compact" id="speechify-save-key">Save key</button
+              ><button type="button" class="secondary compact" id="speechify-remove-key">Remove key</button>
+            </div>
+            <p id="speechify-key-status" class="receiver-note" role="status">Loading key status …</p>
+            <label class="checkbox-label"
+              ><input type="checkbox" id="setting-alexaLearningEnabled" />Prepare Alexa texts with Runa in the
+              background</label
+            >
+            <p class="receiver-note">
+              Alexa continues speaking. Only new writes to speak, announcement and ssml are read. Learning
+              mode does not play audio or modify Alexa states.
+            </p>
+            <label
+              >Alexa instances<input id="setting-alexaInstances" placeholder="alexa2.0" autocomplete="off"
+            /></label>
+          </section>
+          <div class="settings-grid" style="margin-top: 18px">
+            <label
+              >Accept SayIt commands (optional)<input
+                id="setting-sayitInstances"
+                placeholder="For example sayit.0"
+                autocomplete="off"
+              /><small
+                >Accepts new writes to tts.text and prepares tts.cachetext without playback. Selected SayIt
+                instances must remain disabled. Blank: disabled.</small
+              ></label
+            >
+          </div>
+          <div class="section-heading">
+            <h2>Preset receivers</h2>
+            <button type="button" id="settings-add" class="secondary compact">Add receiver</button>
+          </div>
+          <p class="receiver-note">
+            Optional: custom names, icons and transport modes. Discovered devices appear under Speech output.
+          </p>
+          <div id="settings-devices" class="settings-devices"></div>
+          <details class="advanced-settings">
+            <summary>Connections and timing</summary>
+            <label class="checkbox-label"
+              ><input type="checkbox" id="setting-keepAliveEnabled" />Keep connections open after
+              announcements</label
+            >
+            <label class="device-field"
+              >Release after inactivity (seconds)<input
+                type="number"
+                id="setting-keepAliveSeconds"
+                min="0"
+                max="3600"
+                step="1"
+              /><small
+                >Default: 300 seconds. 0 retains the connection until manual release, takeover by another
+                sender or restart. A persistent connection can occupy the receiver AirPlay input.</small
+              ></label
+            >
+          </details>
+          <details class="advanced-settings">
+            <summary>Backup</summary>
+            <p>
+              History, settings, voices and runtime are stored in the ioBroker instance backup directory.
+              Updates preserve this directory.
+            </p>
+            <p>Updates preserve existing data.</p>
+          </details>
+          <p id="settings-running" class="receiver-note" hidden>
+            Wait for active and queued announcements before saving.
+          </p>
+          <div class="settings-actions">
+            <button type="button" class="primary" id="settings-save" disabled>Save settings</button
+            ><button type="button" class="secondary" id="settings-reset">Discard changes</button>
+          </div>
+          <p id="config-notice" class="notice" role="status" hidden></p>
         </section>
-      </div>
-      <section class="learning-status" id="learning-status" hidden aria-label="Alexa learning mode"><h2>Alexa learning mode</h2><p id="learning-summary" role="status"></p><button class="secondary compact" id="learning-retry">Retry failed texts</button></section>
-      <details class="cache-viewer" id="cache-viewer"><summary>View speech cache</summary>
-        <div class="section-heading"><p id="cache-summary">Cache is loaded when opened.</p><button class="secondary compact" id="cache-refresh">Refresh</button></div>
-        <p class="receiver-note">Playback uses the cached file and selected receiver. Speechify files are retained; existing Piper and SayIt cache entries are preserved.</p>
-        <div class="history-table"><table><thead><tr><th>Text</th><th>Voice</th><th>Size</th><th>Actions</th></tr></thead><tbody id="cache-entries"></tbody></table></div>
-        <div class="actions"><button class="secondary compact" id="cache-prev">Previous</button><button class="secondary compact" id="cache-next">Next</button></div>
-      </details>
-      <section class="history" aria-labelledby="history-title">
-        <h2 id="history-title">Recent announcements</h2>
-        <div class="history-table"><table><thead><tr><th>Time</th><th>Receiver</th><th>Message</th><th>Result</th></tr></thead><tbody id="history"><tr class="empty"><td colspan="4">No announcements yet.</td></tr></tbody></table></div>
-      </section>
-    </section>
-
-<section id="panel-settings" class="settings-panel" role="tabpanel" aria-labelledby="tab-settings" hidden>
-  <div class="intro"><h1>Settings</h1><p>Speech provider, network, volume and preset receivers.</p></div>
-  <div class="settings-grid">
-    <label>Speech provider<select class="browser-default" id="setting-speechProvider"><option value="piper">Piper · Local voice</option><option value="sayit-google">SayIt · Google German · New texts online</option><option value="speechify">Speechify · Runa · Ramona fallback</option></select><small>The saved provider is used for sample texts and AirPlay announcements. Completed announcements are reused locally. Speechify generates new texts online; Ramona provides fallback on errors.</small></label>
-    <label id="piper-voice-field">Local voice<select class="browser-default" id="setting-piperVoice"><option value="de_DE-thorsten-medium">Thorsten · Male · Medium</option><option value="de_DE-ramona-low">Ramona · Female · Low</option></select><small>The voice is downloaded when first selected. New texts are then generated offline. Prepare text and Start announcement use the saved voice.</small></label>
-    <div class="pre-roll-option"><label class="checkbox-label"><input id="setting-airplayPreRollEnabled" type="checkbox">Enable silent pre-roll</label><small>Helps protect a quiet or clipped announcement beginning. Applies to persistent pyatv modes.</small></div>
-    <label>Pre-roll (milliseconds)<input id="setting-airplayPreRollMs" type="number" min="0" max="2000" step="50"><small>1,000 ms = 1 second. Default: 700 ms. Without pre-roll, some receivers may attenuate the beginning.</small></label>
-    <label>Local network address<input id="setting-bind" placeholder="Automatic" autocomplete="off"><small>IPv4 address of the ioBroker host. Blank: select automatically.</small></label>
-    <label>Additional direct interface port<input id="setting-port" type="number" min="1024" max="65535" step="1"><small>The ioBroker interface uses the Admin connection.</small></label>
-    <label>Maximum announcement volume (%)<input id="setting-maxVolume" type="number" min="1" max="100" step="1"><small>Limits the volume requested from the receiver.</small></label>
-    <label>Discovery network<input id="setting-network" placeholder="For example 192.168.1.0/24" autocomplete="off"><small>Blank: network of the selected interface. The entire IP range is not scanned.</small></label>
-    <label>Additional known receiver addresses<textarea id="setting-seedHosts" rows="3" placeholder="One IPv4 address per line"></textarea><small>Up to 32 addresses on the local discovery network.</small></label>
-    <label>Default transport mode<select class="browser-default" id="setting-defaultMode"><option value="native-ntp">pyatv · Persistent connection (NTP)</option><option value="native">pyatv · Persistent connection (automatic)</option><option value="auto">pyatv · File, automatic</option><option value="1">pyatv · File, AirPlay 1</option><option value="2">pyatv · File, AirPlay 2</option></select><small>The first two modes support persistent connections with NTP. The other modes send individual files.</small></label>
-  </div>
-  <section class="speechify-settings" aria-label="Speechify und Alexa learning mode">
-    <h2>Speechify · Runa</h2>
-    <p class="receiver-note">German · Simba 3.5. The API key is stored using ioBroker encryption and is not sent back to the interface.</p>
-    <div class="secret-row"><label>API key<input type="password" id="speechify-api-key" autocomplete="new-password" placeholder="Enter a new API key"></label><button type="button" class="secondary compact" id="speechify-save-key">Save key</button><button type="button" class="secondary compact" id="speechify-remove-key">Remove key</button></div>
-    <p id="speechify-key-status" class="receiver-note" role="status">Loading key status …</p>
-    <label class="checkbox-label"><input type="checkbox" id="setting-alexaLearningEnabled">Prepare Alexa texts with Runa in the background</label>
-    <p class="receiver-note">Alexa continues speaking. Only new writes to speak, announcement and ssml are read. Learning mode does not play audio or modify Alexa states.</p>
-    <label>Alexa instances<input id="setting-alexaInstances" placeholder="alexa2.0" autocomplete="off"></label>
-  </section>
-  <div class="settings-grid" style="margin-top:18px"><label>Accept SayIt commands (optional)<input id="setting-sayitInstances" placeholder="For example sayit.0" autocomplete="off"><small>Accepts new writes to tts.text and prepares tts.cachetext without playback. Selected SayIt instances must remain disabled. Blank: disabled.</small></label></div>
-  <div class="section-heading"><h2>Preset receivers</h2><button type="button" id="settings-add" class="secondary compact">Add receiver</button></div>
-  <p class="receiver-note">Optional: custom names, icons and transport modes. Discovered devices appear under Speech output.</p>
-  <div id="settings-devices" class="settings-devices"></div>
-  <details class="advanced-settings"><summary>Connections and timing</summary>
-    <label class="checkbox-label"><input type="checkbox" id="setting-keepAliveEnabled">Keep connections open after announcements</label>
-    <label class="device-field">Release after inactivity (seconds)<input type="number" id="setting-keepAliveSeconds" min="0" max="3600" step="1"><small>Default: 300 seconds. 0 retains the connection until manual release, takeover by another sender or restart. A persistent connection can occupy the receiver AirPlay input.</small></label>
-  </details>
-  <details class="advanced-settings"><summary>Backup and compatibility</summary>
-    <p>History, settings, voices and runtime are stored in the ioBroker instance backup directory. Updates preserve this directory.</p>
-    <label class="checkbox-label"><input type="checkbox" id="setting-importPrototype">Keep existing data import</label>
-    <label class="checkbox-label"><input type="checkbox" id="setting-legacyBridge">Support legacy 0_userdata states (instance 0)</label>
-    <p>Updates preserve existing data.</p>
-  </details>
-  <p id="settings-running" class="receiver-note" hidden>Wait for active and queued announcements before saving.</p>
-  <div class="settings-actions"><button type="button" class="primary" id="settings-save" disabled>Save settings</button><button type="button" class="secondary" id="settings-reset">Discard changes</button></div>
-  <p id="config-notice" class="notice" role="status" hidden></p>
-</section>
-
-    </main>
-    <footer>AirPlay MM <span id="adapter-version">0.1.0-beta.1</span> · Speechify / SayIt / Piper · pyatv</footer>
-  </div>
-</body>
+      </main>
+      <footer>
+        AirPlay MM <span id="adapter-version">0.1.0-beta.2</span> · Speechify / SayIt / Piper · pyatv
+      </footer>
+    </div>
+  </body>
 </html>
